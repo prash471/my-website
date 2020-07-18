@@ -1,50 +1,68 @@
-import logger from 'debug';
-import Koa from 'koa';
-import bodyParser from 'koa-better-body';
-import compress from 'koa-compress';
-import favicon from 'koa-favicon';
-import mount from 'koa-mount';
-import serve from 'koa-static';
-import convert from 'koa-convert';
-import config from './config';
-import catcher from './middleware/catcher';
-import render from './middleware/render';
-import markdown from './routes/markdown';
-import hooks from './routes/hooks';
+"use strict";
 
-const app = new Koa();
+exports.__esModule = true;
+exports.default = void 0;
 
-// Middleware
+var _debug = _interopRequireDefault(require("debug"));
+
+var _koa = _interopRequireDefault(require("koa"));
+
+var _koaBetterBody = _interopRequireDefault(require("koa-better-body"));
+
+var _koaCompress = _interopRequireDefault(require("koa-compress"));
+
+var _koaFavicon = _interopRequireDefault(require("koa-favicon"));
+
+var _koaMount = _interopRequireDefault(require("koa-mount"));
+
+var _koaStatic = _interopRequireDefault(require("koa-static"));
+
+var _koaConvert = _interopRequireDefault(require("koa-convert"));
+
+var _config = _interopRequireDefault(require("./config"));
+
+var _catcher = _interopRequireDefault(require("./middleware/catcher"));
+
+var _render = _interopRequireDefault(require("./middleware/render"));
+
+var _markdown = _interopRequireDefault(require("./routes/markdown"));
+
+var _hooks = _interopRequireDefault(require("./routes/hooks"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var app = new _koa.default(); // Middleware
 // app.use(serverpush({
 //   manifest: path.join(__dirname, '../../push_manifest.json'),
 //   singleheader: false
 // }));
-app.use(favicon(config.http.favicon));
-app.use(compress());
-app.use(convert(bodyParser({
+
+app.use((0, _koaFavicon.default)(_config.default.http.favicon));
+app.use((0, _koaCompress.default)());
+app.use((0, _koaConvert.default)((0, _koaBetterBody.default)({
   formLimit: '200kb',
   jsonLimit: '200kb',
   bufferLimit: '4mb'
 })));
+app.use(_catcher.default);
+app.use(_markdown.default.routes());
+app.use(_hooks.default.routes()); // Serve static files
 
-app.use(catcher);
-app.use(markdown.routes());
-app.use(hooks.routes());
-
-// Serve static files
-for (const [k, v] of Object.entries(config.static)) {
-  logger('inferno:static')(v);
-  app.use(mount(k, serve(v, { index: false })));
-}
-
-// Serve service worker
+for (var _i = 0, _Object$entries = Object.entries(_config.default.static); _i < _Object$entries.length; _i++) {
+  var _Object$entries$_i = _Object$entries[_i],
+      k = _Object$entries$_i[0],
+      v = _Object$entries$_i[1];
+  (0, _debug.default)('inferno:static')(v);
+  app.use((0, _koaMount.default)(k, (0, _koaStatic.default)(v, {
+    index: false
+  })));
+} // Serve service worker
 // app.use(serve(require('path').join(__dirname, '../assets/service')))
-app.use(serve(require('path').join(__dirname, '../../public/assets/service')));
 
-// Render inferno app
-app.use(render);
 
-// if (process.env.DEV) {
+app.use((0, _koaStatic.default)(require('path').join(__dirname, '../../public/assets/service'))); // Render inferno app
+
+app.use(_render.default); // if (process.env.DEV) {
 //   // Without HTTP2 support
 //   app.listen(config.http.port, function() {
 //     logger('inferno:start')('Listening on port ' + config.http.port);
@@ -70,13 +88,16 @@ app.use(render);
  * only listen in dev env 
  * could also check with process.env.DEV
  */
+
 if (process.env.IS_NOW === undefined) {
-  logger('inferno:server')('NOT on now');
-  app.listen(config.http.port, function() {
-    logger('inferno:start')('Listening on port ' + config.http.port);
+  (0, _debug.default)('inferno:server')('NOT on now');
+  app.listen(_config.default.http.port, function () {
+    (0, _debug.default)('inferno:start')('Listening on port ' + _config.default.http.port);
   });
 } else {
-  logger('inferno:server')('IS on now');
+  (0, _debug.default)('inferno:server')('IS on now');
 }
 
-export default app.callback();
+var _default = app.callback();
+
+exports.default = _default;

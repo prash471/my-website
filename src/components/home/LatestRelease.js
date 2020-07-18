@@ -1,36 +1,52 @@
-import {Component, createTextVNode} from 'inferno';
-import {ChildFlags} from 'inferno-vnode-flags';
+"use strict";
 
-export class LatestRelease extends Component {
-  constructor(props, context) {
-    super(props, context);
+exports.__esModule = true;
+exports.LatestRelease = void 0;
 
-    this.state = {
+var _inferno = require("inferno");
+
+var _infernoVnodeFlags = require("inferno-vnode-flags");
+
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
+
+var LatestRelease = /*#__PURE__*/function (_Component) {
+  _inheritsLoose(LatestRelease, _Component);
+
+  function LatestRelease(props, context) {
+    var _this;
+
+    _this = _Component.call(this, props, context) || this;
+    _this.state = {
       release: null
     };
+    return _this;
   }
 
-  componentWillMount() {
-    fetch(`/api/release/latest`)
-      .then(response => response.json())
-      .then(response => {
-        this.setState({ release: response });
+  var _proto = LatestRelease.prototype;
+
+  _proto.componentWillMount = function componentWillMount() {
+    var _this2 = this;
+
+    fetch("/api/release/latest").then(function (response) {
+      return response.json();
+    }).then(function (response) {
+      _this2.setState({
+        release: response
       });
-  }
+    });
+  };
 
-  render(props, state) {
-    let release = state.release;
+  _proto.render = function render(props, state) {
+    var release = state.release;
 
     if (!release) {
       return null;
     }
 
-    return (
-      <section className="news">
-        <h4 $HasVNodeChildren>{createTextVNode(release.name)}</h4>
-        <span className="release" $HasVNodeChildren>{createTextVNode(new Date(release.published_at).toLocaleString())}</span>
+    return (0, _inferno.createVNode)(1, "section", "news", [(0, _inferno.createVNode)(1, "h4", null, (0, _inferno.createTextVNode)(release.name), 2, null, null, null), (0, _inferno.createVNode)(1, "span", "release", (0, _inferno.createTextVNode)(new Date(release.published_at).toLocaleString()), 2, null, null, null)], 4, null, null, null);
+  };
 
-      </section>
-    );
-  }
-}
+  return LatestRelease;
+}(_inferno.Component);
+
+exports.LatestRelease = LatestRelease;

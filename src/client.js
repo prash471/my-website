@@ -1,27 +1,36 @@
+"use strict";
+
+var _inferno = require("inferno");
+
+require("isomorphic-fetch");
+
+require("../core/polyfills");
+
+require("../core/logger");
+
+require("./assets/styles/index.scss");
+
+var _infernoHydrate = require("inferno-hydrate");
+
+var _history = require("history");
+
+var _App = require("./components/App");
+
 // This is the entry point for our client-side logic
 // The server-side has a similar configuration in `src/server/middleware/render.js`
-import 'isomorphic-fetch';
-import '../core/polyfills';
-import '../core/logger';
-import './assets/styles/index.scss';
-import {hydrate} from 'inferno-hydrate';
-import {createBrowserHistory} from 'history';
-import {App} from './components/App';
-
 // We render our react app into this element
-const root = document.getElementById('root');
-const history = createBrowserHistory();
-
-history.listen((location) => {
+var root = document.getElementById('root');
+var history = (0, _history.createBrowserHistory)();
+history.listen(function (location) {
   window.ga('send', 'pageview', location.pathname);
 });
-
 /**
  * Render our component according to our routes
  */
-hydrate(<App history={history}/>, root);
 
-// cache all assets if browser supports serviceworker
+(0, _infernoHydrate.hydrate)((0, _inferno.createComponentVNode)(2, _App.App, {
+  "history": history
+}, null, null), root); // cache all assets if browser supports serviceworker
 // if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
 //   const sw = navigator.serviceWorker;
 //

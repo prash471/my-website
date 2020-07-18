@@ -15,3 +15,4 @@
 //     </circle>
 //   </svg>;
 // }
+"use strict";

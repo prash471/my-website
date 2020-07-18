@@ -78,3 +78,4 @@
 // function onFinishedLoading() {
 //   window.editor.setOption('mode', 'jsx');
 // }
+"use strict";

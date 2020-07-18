@@ -1,5 +1,7 @@
-const CACHE_NAME = 'inferno-cache';
-// importScripts('serviceworker-cache-polyfill.js');
+"use strict";
+
+var CACHE_NAME = 'inferno-cache'; // importScripts('serviceworker-cache-polyfill.js');
+
 /*
 self.addEventListener('install', e => {
     function onCacheOpen(cache) {
