@@ -2,7 +2,7 @@
   "name": "my-website",
   "version": "0.1.0",
   "private": true,
-  "homePage": "https://prash471.github.io/",
+  "homePage": "https://prash471.github.io",
   "dependencies": {
     "inferno": "^7.4.2",
     "inferno-scripts": "7.0.4"
